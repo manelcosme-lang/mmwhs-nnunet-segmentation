@@ -24,11 +24,6 @@ A rede aprende a distinguir 7 estruturas:
 | `nnUNetTrainer_quicktest.py` | Trainer curto (5 épocas de 10 iterações) para verificar que o pipeline corre de ponta a ponta. Corrido diretamente, instala-se dentro do pacote `nnunetv2` |
 | `requirements.txt` | Dependências Python |
 
-Os dados e as pastas geradas pelo nnU-Net não estão no repositório (ver `.gitignore`).
-
-## Como reproduzir
-
-Todos os comandos são corridos a partir da raiz do repositório.
 
 ### 1. Ambiente
 
