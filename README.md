@@ -119,5 +119,3 @@ As imagens têm de estar numa pasta própria, com o sufixo `_0000` (por exemplo 
 ```bash
 nnUNetv2_predict -i PASTA_IMAGENS -o PASTA_PREDICOES -d 1 -c 2d -f 0 -tr nnUNetTrainer_quicktest -device mps --disable_tta
 ```
-
-As predições têm os valores 0 a 7 da tabela acima.
