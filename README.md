@@ -30,7 +30,7 @@ A rede aprende a distinguir 7 estruturas:
 Testado com Python 3.13, nnU-Net 2.8.1 e PyTorch 2.14.0, num MacBook Air M1.
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
+git clone <https://github.com/manelcosme-lang/mmwhs-nnunet-segmentation>
 cd cardio-nnunet
 python3 -m venv nnunet-env
 source nnunet-env/bin/activate
