@@ -39,8 +39,6 @@ pip install -r requirements.txt
 
 ### 2. Onde pôr os dados
 
-Cria a pasta `data_raw_ct_train/` na raiz do repositório e põe lá os 40 ficheiros de treino de CT do MM-WHS, com os nomes originais:
-
 ```
 cardio-nnunet/
 └── data_raw_ct_train/
