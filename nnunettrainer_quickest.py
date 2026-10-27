@@ -11,7 +11,6 @@ class nnUNetTrainer_quicktest(nnUNetTrainer):
         self.num_iterations_per_epoch = 10
         self.num_val_iterations_per_epoch = 5
 
-
 if __name__ == "__main__":
     import shutil
     from pathlib import Path
