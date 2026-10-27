@@ -1,4 +1,4 @@
-# cardio-nnunet
+# mmwhs-nnunet-segmentation
 
 Segmentação de estruturas cardíacas em CT com o [nnU-Net v2](https://github.com/MIC-DKFZ/nnUNet), usando os dados de treino de CT do MM-WHS (20 casos).
 
@@ -24,14 +24,19 @@ A rede aprende a distinguir 7 estruturas:
 | `nnUNetTrainer_quicktest.py` | Trainer curto (5 épocas de 10 iterações) para verificar que o pipeline corre de ponta a ponta. Corrido diretamente, instala-se dentro do pacote `nnunetv2` |
 | `requirements.txt` | Dependências Python |
 
+Os dados e as pastas geradas pelo nnU-Net não estão no repositório (ver `.gitignore`).
+
+## Como reproduzir
+
+Todos os comandos são corridos a partir da raiz do repositório.
 
 ### 1. Ambiente
 
 Testado com Python 3.13, nnU-Net 2.8.1 e PyTorch 2.14.0, num MacBook Air M1.
 
 ```bash
-git clone <https://github.com/manelcosme-lang/mmwhs-nnunet-segmentation>
-cd cardio-nnunet
+git clone https://github.com/manelcosme-lang/mmwhs-nnunet-segmentation.git
+cd mmwhs-nnunet-segmentation
 python3 -m venv nnunet-env
 source nnunet-env/bin/activate
 pip install -r requirements.txt
@@ -39,8 +44,10 @@ pip install -r requirements.txt
 
 ### 2. Onde pôr os dados
 
+Cria a pasta `data_raw_ct_train/` na raiz do repositório e põe lá os 40 ficheiros de treino de CT do MM-WHS, com os nomes originais:
+
 ```
-cardio-nnunet/
+mmwhs-nnunet-segmentation/
 └── data_raw_ct_train/
     ├── ct_train_1001_image.nii.gz
     ├── ct_train_1001_label.nii.gz
@@ -119,3 +126,5 @@ As imagens têm de estar numa pasta própria, com o sufixo `_0000` (por exemplo 
 ```bash
 nnUNetv2_predict -i PASTA_IMAGENS -o PASTA_PREDICOES -d 1 -c 2d -f 0 -tr nnUNetTrainer_quicktest -device mps --disable_tta
 ```
+
+As predições têm os valores 0 a 7 da tabela acima.
