@@ -11,6 +11,9 @@ class nnUNetTrainer_quicktest(nnUNetTrainer):
         self.num_iterations_per_epoch = 10
         self.num_val_iterations_per_epoch = 5
 
+
+# Só corre quando o ficheiro é executado diretamente (python nnUNetTrainer_quicktest.py),
+# não quando o nnU-Net o importa durante o treino.
 if __name__ == "__main__":
     import shutil
     from pathlib import Path
