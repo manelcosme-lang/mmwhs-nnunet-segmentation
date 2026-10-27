@@ -2,13 +2,18 @@ import json
 import os
 import re
 import shutil
+import sys
 from pathlib import Path
 
-
-SOURCE_DIR = Path.home() / "projetos" / "cardio-nnunet" / "data_raw_ct_train"
-NNUNET_RAW = Path(os.environ.get("nnUNet_raw", Path.home() / "projetos" / "cardio-nnunet" / "nnUNet_raw"))
+# Todos os caminhos são relativos à pasta onde este script está (a raiz do repositório)
+PROJECT_DIR = Path(__file__).resolve().parent
+SOURCE_DIR = PROJECT_DIR / "data_raw_ct_train"
+NNUNET_RAW = Path(os.environ.get("nnUNet_raw", PROJECT_DIR / "nnUNet_raw"))
 DATASET_NAME = "Dataset001_Heart"
 
+if not SOURCE_DIR.is_dir():
+    sys.exit(f"[ERRO] Pasta de dados não encontrada: {SOURCE_DIR}\n"
+             "Cria-a e põe lá os ficheiros ct_train_XXXX_image.nii.gz e ct_train_XXXX_label.nii.gz.")
 
 dataset_dir = NNUNET_RAW / DATASET_NAME
 images_tr = dataset_dir / "imagesTr"
@@ -17,7 +22,7 @@ labels_tr = dataset_dir / "labelsTr"
 images_tr.mkdir(parents=True, exist_ok=True)
 labels_tr.mkdir(parents=True, exist_ok=True)
 
-
+# Padrão dos ficheiros originais: ct_train_1001_image.nii.gz / ct_train_1001_label.nii.gz
 pattern = re.compile(r"ct_train_(\d+)_(image|label)\.nii\.gz")
 
 cases = {}  # case_id -> {"image": path, "label": path}
@@ -55,20 +60,20 @@ for case_id in complete_cases:
     print(f"  {src_label.name} -> {dst_label.name}")
 
 # Criar dataset.json
-# Valores confirmados nos ficheiros de label do MM-WHS (7 estruturas + fundo)
+# As classes correspondem aos valores depois de correr o remap_labels.py
 dataset_json = {
     "channel_names": {
         "0": "CT"
     },
     "labels": {
         "background": 0,
-        "myocardium_lv": 205,
-        "left_atrium": 420,
-        "left_ventricle": 500,
-        "right_atrium": 550,
-        "right_ventricle": 600,
-        "ascending_aorta": 820,
-        "pulmonary_artery": 850
+        "myocardium_lv": 1,
+        "left_atrium": 2,
+        "left_ventricle": 3,
+        "right_atrium": 4,
+        "right_ventricle": 5,
+        "ascending_aorta": 6,
+        "pulmonary_artery": 7
     },
     "numTraining": len(complete_cases),
     "file_ending": ".nii.gz"
@@ -79,7 +84,4 @@ with open(dataset_dir / "dataset.json", "w") as f:
 
 print(f"\ndataset.json criado em: {dataset_dir / 'dataset.json'}")
 print(f"Estrutura pronta em: {dataset_dir}")
-print("\nATENÇÃO: revê o campo 'labels' no dataset.json — o MM-WHS pode ter múltiplas")
-print("estruturas anotadas (aorta, ventrículo esquerdo, etc.) com valores diferentes de 1.")
-print("Verifica com um visualizador (3D Slicer) ou com numpy/SimpleITK quais os valores")
-print("presentes num ficheiro de label antes de correres o pré-processamento do nnU-Net.")
+print("\nPróximo passo: python remap_labels.py")
